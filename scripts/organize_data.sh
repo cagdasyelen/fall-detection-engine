@@ -1,10 +1,27 @@
+#!/usr/bin/env bash
 
 
-FILE=$1
-DIR=$(pwd)
+#Labels are:
+# 0 : no fall
+# 1 : first level fall
+# 2 : second level fall
+# 3 : third levle fall
 
-sed -i 1,2d $FILE
+#increasing number shows the increase in severity level
 
-echo "$(awk '{printf "%d,%s\n", NR, $0}' < $FILE)" > /tmp/data_tmp.csv
+
+
+
+LABEL=$1
+
+FILE=/tmp/data.csv
+
+
+sed -i 1,3d $FILE
+
+cd ~/fall-detection-engine/raw-data 
+numberOfFiles=$(ls -l | wc -l)
+
+echo "$(awk '{printf "%d,%s\n", NR, $0}' < $FILE)" > ~/fall-detection-engine/raw-data/"sample"$numberOfFiles"_fall"$LABEL""
 rm -rf /tmp/data.csv
-mv /tmp/data_tmp.csv /tmp/data.csv
+
