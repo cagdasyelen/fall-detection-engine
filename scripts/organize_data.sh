@@ -22,6 +22,6 @@ sed -i 1,3d $FILE
 cd ~/fall-detection-engine/raw-data 
 numberOfFiles=$(ls -l | wc -l)
 
-echo "$(awk '{printf "%d,%s\n", NR, $0}' < $FILE)" > ~/fall-detection-engine/raw-data/"sample"$numberOfFiles"_fall"$LABEL""
+echo "$(awk '{printf "%d,%s\n", NR, $0}' < $FILE)" > ~/fall-detection-engine/raw-data/"sample"$numberOfFiles"_fall"$LABEL".csv"
 rm -rf /tmp/data.csv
 
