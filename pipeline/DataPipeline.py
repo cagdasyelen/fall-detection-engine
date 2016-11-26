@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import csv
 
 
 
@@ -18,6 +19,8 @@ Features to be extracted from raw data:
 	-max(gMag)
 	-mean(gMag)
 	-std(gMag)
+	-p2p(aMag)
+	-p2p(gMag)
 
 
 '''
@@ -26,6 +29,7 @@ class FeatureExtraction:
 
 	def __init__(self, fileDir):
 		self.rawDataFile = fileDir
+		print(fileDir)
 		self.rawDf = pd.read_csv(fileDir, header=0, index_col=0)
 
 		#Adding mag of acc and gyro to pandas frame
@@ -53,50 +57,34 @@ class FeatureExtraction:
 
 
 
-	def addFeatures(self,addMin,addMax,addAvg,addStd):
+	def addFeatures(self):
 
-		if(addMin == True):
-			self.features['aMin'] = self.stats["aMag"]["min"]
-			self.features['gMin'] = self.stats["gMag"]["min"]
+		self.features['aMin'] = self.stats["aMag"]["min"]
+		self.features['gMin'] = self.stats["gMag"]["min"]
 
-		if(addMax == True):
-			self.features['aMax'] = self.stats["aMag"]["max"]
-			self.features['gMax'] = self.stats["gMag"]["max"]
+		self.features['aMax'] = self.stats["aMag"]["max"]
+		self.features['gMax'] = self.stats["gMag"]["max"]
 
-		if(addAvg == True):
-			self.features['aAvg'] = self.stats["aMag"]["mean"]
-			self.features['gAvg'] = self.stats["gMag"]["mean"]
+		self.features['aAvg'] = self.stats["aMag"]["mean"]
+		self.features['gAvg'] = self.stats["gMag"]["mean"]
 
-		if(addStd == True):
-			self.features['aStd'] = self.stats["aMag"]["std"]
-			self.features['gStd'] = self.stats["gMag"]["std"]
+		self.features['aStd'] = self.stats["aMag"]["std"]
+		self.features['gStd'] = self.stats["gMag"]["std"]
 
+		self.features['aP2P'] = self.stats["aMag"]["max"] - self.stats["aMag"]["min"]
+		self.features['gP2P'] = self.stats["gMag"]["max"] - self.stats["gMag"]["min"]
 
-		print(self.features)
-	
-
-
-		
-	def getAccMag(self):
-		return self.rawDf["aMag"]
-
-
-	def getGyroMag(self):
-		return self.rawDf["gMag"]
+		self.features['label'] = self.label
 
 
 
 
+	def writeToFile(self, fileToWrite):
 
-
-
-
-
-
-f = FeatureExtraction("../raw-data/sample32_fall0.csv")
-f.addFeatures(True, True, True, True)
-
-
+		with open(fileToWrite, 'r+',encoding="utf8") as f:
+			header = next(csv.reader(f))
+			dict_writer = csv.DictWriter(f, header, -999)
+			dict_writer.writerow(self.features)
 
 
 
