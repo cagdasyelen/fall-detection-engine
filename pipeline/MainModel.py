@@ -1,10 +1,11 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import normalize
-from sklearn.tree import DecisionTreeClassifier
+#from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import ExtraTreesClassifier
+#from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.model_selection import cross_val_score
+#import pickle
 
 
 
@@ -18,6 +19,7 @@ class Model:
 		self.predict()
 		print(self.get_training_accuracy())
 		print(self.get_cv_accuracy())
+		pickle.dumps()
 
 
 	def load_data(self):
@@ -58,6 +60,7 @@ print(m.test_ID)
 
 print("prediction:")
 print(m.test_Y)
+
 
 
 
