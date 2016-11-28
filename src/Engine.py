@@ -1,6 +1,15 @@
 import pandas as pd
 import numpy as np
+from sklearn.ensemble import GradientBoostingClassifier
+import pickle
 
+
+'''
+
+This class creates the samples(ml inputs) from the file which contains raw sensor data
+by looking at a snapshop every 0.5 sec interval (jumping 5 samples)
+
+'''
 
 class Engine:
 
@@ -57,7 +66,15 @@ class Engine:
 
 
 		
-		self.samples = self.samples.reshape(7,10)
+		self.samples = self.samples.reshape(n,10)
+
+
+	def predict(self, clfFile):
+		with open(clfFile, 'rb') as input:
+			self.clf = pickle.load(input)
+
+		print(self.clf.predict(self.samples))
+
 
 
 

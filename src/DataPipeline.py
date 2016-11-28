@@ -91,14 +91,5 @@ class FeatureExtraction:
 
 
 
-for f in os.listdir("../raw-data"):
-	fe = FeatureExtraction("".join(["../raw-data/", f]))
-	fe.addFeatures()
-	fe.writeToFile("../train/train.csv")
-
-
-
-
-
 
 	
