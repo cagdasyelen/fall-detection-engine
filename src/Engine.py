@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 import pickle
+import time
 
 
 '''
@@ -73,8 +74,18 @@ class Engine:
 		with open(clfFile, 'rb') as input:
 			self.clf = pickle.load(input)
 
-		print(self.clf.predict(self.samples))
+		return self.clf.predict(self.samples)
 
+
+while(1):
+	e  = Engine()
+	e.createSamples('temp.csv')
+	results = e.predict('./clf/clf.pkl')
+	with open('severity.txt', 'w+') as file:
+		f.write(int(max(results)))
+
+	time.sleep(3)
+	
 
 
 
