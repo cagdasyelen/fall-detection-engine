@@ -3,8 +3,7 @@ import numpy as np
 from sklearn.ensemble import GradientBoostingClassifier
 import pickle
 import time
-
-
+import os
 '''
 
 This class creates the samples(ml inputs) from the file which contains raw sensor data
@@ -47,6 +46,8 @@ class Engine:
 
 
 	def createSamples(self, fileName):
+		if (not os.path.isfile('data.csv')):
+			return False 
 		self.rawData = pd.read_csv(fileName, header=0, index_col=0)
 		self.rawArr = self.rawData.values
 
@@ -68,8 +69,8 @@ class Engine:
 
 		
 		self.samples = self.samples.reshape(n,10)
-
-
+		return True
+	
 	def predict(self, clfFile):
 		with open(clfFile, 'rb') as input:
 			self.clf = pickle.load(input)
@@ -79,11 +80,14 @@ class Engine:
 
 while(1):
 	e  = Engine()
-	e.createSamples('temp.csv')
-	results = e.predict('./clf/clf.pkl')
-	with open('severity.txt', 'w+') as file:
-		f.write(int(max(results)))
-
+	isFile=e.createSamples('data.csv')
+	if(isFile):
+		print("File found!")
+		results = e.predict('clf.pkl')
+		os.system("rm -rf data.csv")
+		with open('severity.txt', 'w+') as file:
+			file.write(str(int(max(results))))
+			file.write("\nSensorTag2650");
 	time.sleep(3)
 	
 
